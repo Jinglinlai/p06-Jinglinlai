@@ -298,6 +298,10 @@ class Transformer:
             )
             crop_height = source_height
 
+        # avoid empty crops, which produce fully transparent output
+        crop_width = max(1, crop_width)
+        crop_height = max(1, crop_height)
+
         crop_left = int(
             round(
                 min(
@@ -400,6 +404,10 @@ class Transformer:
             resize_width = round(
                 source_width * self.target_height / source_height + 1e-5
             )
+
+        # avoid zero-sized resizes, which produce empty images
+        resize_width = max(1, resize_width)
+        resize_height = max(1, resize_height)
 
         # ensure that filter should work on the real image size
         # and not on the request size which might be smaller than the
